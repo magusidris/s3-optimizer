@@ -28,7 +28,7 @@ In `.env`:
 -   `AWS_DEFAULT_REGION`: which region to deploy to
 -   `AWS_BUCKET`: the AWS public bucket
 -   `AWS_BUCKET_PRIVATE`: the AWS private bucket if you used
--   `AWS_USE_PATH_STYLE_ENDPOINT`: false
+-   `AWS_USE_PATH_STYLE_ENDPOINT`: the path style endpoint, use false / true (default false)
 -   `AWS_URL`: the AWS url / imagekit url
 
 [s3]: https://aws.amazon.com/s3
