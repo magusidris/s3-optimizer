@@ -2,7 +2,7 @@
 
 Automagitically optimize your images on S3 with the magic of AWS Lambda.
 
-Optim is a super-simple [s3][s3], and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
+Optim is a super-simple [s3] [s3], and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
 with images and videos").
 
 
