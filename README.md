@@ -2,7 +2,7 @@
 
 Automagitically optimize your images on S3 with the magic of imagekit.io.
 
-Optim is a super-simple [S3](https://aws.amazon.com/s3 "Run code without thinking about servers or clusters"), and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
+Optimize a simple [S3](https://aws.amazon.com/s3 "Run code without thinking about servers or clusters"), and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
 with images and videos").
 
 ## Setup
