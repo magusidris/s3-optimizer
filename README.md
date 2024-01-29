@@ -1,65 +1,56 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Optim
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Automagitically optimize your images on S3 with the magic of AWS Lambda.
 
-## About Laravel
+Optim is a super-simple [Lambda][l] function that can listen to an S3 bucket for uploads, and runs everything it can through [imagemin][imagemin].
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+ * Clone this repo
 
-## Learning Laravel
+ * Run `npm install`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+ * Fill in `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in `.env` to a set of credentials that can create Lambda functions (alternatively have these already in your environment)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+ * Create an IAM role for Optim to use. It needs the following permissions on all the S3 buckets you want to use (allowing these operations on ARN `*` is easiest to start with):
+   * `getObject`
+   * `putObject`
+   * `putObjectAcl`
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+ * Find the ARN for this role. It looks something like `arn:aws:iam::1234567890:role/rolename`.
 
-### Premium Partners
+ * Fill in `AWS_ROLE_ARN` in `.env`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+ * Run `npm run deploy`
 
-## Contributing
+ * Hurrah, your Lambda function is now deployed! It'll be created with the name `optim-production` unless you changed values in `.env`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+ * You can now hook this function up to any S3 bucket you like in the management console. Easiest way is to follow [AWS's guide][s3-evt-setup]
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Configuration
 
-## Security Vulnerabilities
+There are two sets of configuration here. The `.env` file contains configuration related to setup and deployment, and `runtime.env` is for configuration of how Optim behaves.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+In `.env`:
 
-## License
+ * `AWS_ACCESS_KEY_ID`: the AWS access key used to deploy the Lambda function
+ * `AWS_SECRET_ACCESS_KEY`: the corresponding secret access key
+ * `AWS_ROLE_ARN`: role with which the lambda function will be executed
+ * `AWS_REGION`: which region to deploy to
+ * `AWS_FUNCTION_NAME` and `AWS_ENVIRONMENT` control naming of the lambda function created
+ * `AWS_MEMORY_SIZE` is the amount of memory given to your Lambda. It's also related to how much CPU share it gets. Since optimizing images is fairly intensive, probably best to keep this high
+ * `AWS_TIMEOUT` runtime timeout for the lambda in seconds up to 5 minutes. Again, image optimization is fairly intensive so you'll probably want to leave this at the maximum of 300.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# s3-optimizer
+In `runtime.env`:
+
+ * `UPLOAD_ACL`: finalised images will be uploaded with this permission level. Should be one of `private` `public-read` `public-read-write` `aws-exec-read` `authenticated-read` `bucket-owner-read` `bucket-owner-full-control`. Default is `public-read`.
+ * `MAX_FILE_SIZE`: files over this size in bytes will be skipped (e.g. big PNGs will probably just hit the timeout anyway). Set to `-1` for no limit
+ * `PNG_OPTIM_LEVEL`: Optimization level to use for PNGs, between 0 and 7. Lower level means faster optimization, higher means better results.
+
+
+[l]: https://aws.amazon.com/lambda/
+[imagemin]: https://github.com/imagemin/imagemin
+[s3-evt-setup]: http://docs.aws.amazon.com/AmazonS3/latest/UG/SettingBucketNotifications.html
