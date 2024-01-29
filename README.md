@@ -2,7 +2,7 @@
 
 Automagitically optimize your images on S3 with the magic of AWS Lambda.
 
-Optim is a super-simple [s3] [s3], and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
+Optim is a super-simple [s3][s3], and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
 with images and videos").
 
 
@@ -52,6 +52,6 @@ In `runtime.env`:
  * `PNG_OPTIM_LEVEL`: Optimization level to use for PNGs, between 0 and 7. Lower level means faster optimization, higher means better results.
 
 
-[s3]: (https://aws.amazon.com/s3 "Run code without thinking about servers or clusters")
+[s3]: https://aws.amazon.com/s3 "Run code without thinking about servers or clusters"
 [imagemin]: https://github.com/imagemin/imagemin
 [s3-evt-setup]: http://docs.aws.amazon.com/AmazonS3/latest/UG/SettingBucketNotifications.html
