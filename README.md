@@ -52,6 +52,6 @@ In `runtime.env`:
  * `PNG_OPTIM_LEVEL`: Optimization level to use for PNGs, between 0 and 7. Lower level means faster optimization, higher means better results.
 
 
-[s3]: https://aws.amazon.com/s3 "Run code without thinking about servers or clusters"
+[s3]: (https://aws.amazon.com/s3 "Run code without thinking about servers or clusters")
 [imagemin]: https://github.com/imagemin/imagemin
 [s3-evt-setup]: http://docs.aws.amazon.com/AmazonS3/latest/UG/SettingBucketNotifications.html
