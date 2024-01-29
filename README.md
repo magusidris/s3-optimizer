@@ -29,7 +29,7 @@ In `.env`:
 -   `AWS_BUCKET`: the AWS public bucket
 -   `AWS_BUCKET_PRIVATE`: the AWS private bucket if you used
 -   `AWS_USE_PATH_STYLE_ENDPOINT`: false / true
--   `AWS_URL`: the AWS url
+-   `AWS_URL`: the AWS url / imagekit url
 
 [s3]: https://aws.amazon.com/s3
 [imagekit]: https://imagekit.io
