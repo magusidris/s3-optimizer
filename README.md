@@ -2,7 +2,7 @@
 
 Automagitically optimize your images on S3 with the magic of AWS Lambda.
 
-Optim is a super-simple [Lambda][l] function that can listen to an S3 bucket for uploads, and runs everything it can through [imagemin][https://imagekit.io/].
+Optim is a super-simple [Lambda][l] function that can listen to an S3 bucket for uploads, and runs everything it can through [imagekit](https://imagekit.io).
 
 
 ## Setup
