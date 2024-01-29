@@ -2,7 +2,7 @@
 
 Automagitically optimize your images on S3 with the magic of AWS Lambda.
 
-Optim is a super-simple [Lambda](https://aws.amazon.com/lambda "Run code without thinking about servers or clusters") function that can listen to an S3 bucket for uploads, and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
+Optim is a super-simple [Lambda]([s3] "Run code without thinking about servers or clusters") function that can listen to an S3 bucket for uploads, and runs everything it can through [imagekit.io](https://imagekit.io "Streamline how you work
 with images and videos").
 
 
@@ -39,11 +39,11 @@ In `.env`:
 
  * `AWS_ACCESS_KEY_ID`: the AWS access key used to deploy the Lambda function
  * `AWS_SECRET_ACCESS_KEY`: the corresponding secret access key
- * `AWS_ROLE_ARN`: role with which the lambda function will be executed
- * `AWS_REGION`: which region to deploy to
- * `AWS_FUNCTION_NAME` and `AWS_ENVIRONMENT` control naming of the lambda function created
- * `AWS_MEMORY_SIZE` is the amount of memory given to your Lambda. It's also related to how much CPU share it gets. Since optimizing images is fairly intensive, probably best to keep this high
- * `AWS_TIMEOUT` runtime timeout for the lambda in seconds up to 5 minutes. Again, image optimization is fairly intensive so you'll probably want to leave this at the maximum of 300.
+ * `AWS_DEFAULT_REGION`: which region to deploy to
+ * `AWS_BUCKET`: the AWS public bucket
+ * `AWS_BUCKET_PRIVATE`: the AWS private bucket if you used
+ * `AWS_USE_PATH_STYLE_ENDPOINT`: false / true
+ * `AWS_URL`: the AWS url
 
 In `runtime.env`:
 
@@ -52,6 +52,6 @@ In `runtime.env`:
  * `PNG_OPTIM_LEVEL`: Optimization level to use for PNGs, between 0 and 7. Lower level means faster optimization, higher means better results.
 
 
-[l]: https://aws.amazon.com/lambda/
+[s3]: [https://aws.amazon.com/lambda/](https://aws.amazon.com/s3/)
 [imagemin]: https://github.com/imagemin/imagemin
 [s3-evt-setup]: http://docs.aws.amazon.com/AmazonS3/latest/UG/SettingBucketNotifications.html
